@@ -39,6 +39,7 @@ func Run(name string, interval int, totWallet int, random bool, decimal int, t *
 func TestSimulation(t *testing.T) {
 	//log.SetOutput(ioutil.Discard)
 	Run("bitcoin", 20, 5, false,8, t)
+	Run("bitcoinYear", 20, 1, false,8, t)
 	Run("ethereum", 20, 5, false,8, t)
 	Run("stake", 20, 5, true,8, t)
 	Run("bryan", 20, 5, false, 8, t)

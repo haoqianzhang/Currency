@@ -1,0 +1,10 @@
+{
+  "base": "year",
+  "frequency": 1,
+  "rewards": [
+    {
+      "formula": "50 * 210000 / (2 ** (Year / 4))",
+      "target": "BitcoinSupply"
+    }
+  ]
+}

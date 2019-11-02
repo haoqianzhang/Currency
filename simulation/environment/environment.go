@@ -37,6 +37,8 @@ func Factory(name string, currency model.Currency) Environment {
 	switch name {
 	case "bitcoin":
 		return &Bitcoin{}
+	case "bitcoinYear":
+		return &BitcoinYear{}
 	case "ethereum":
 		return &Ethereum{}
 	case "stake":

@@ -103,6 +103,9 @@ func (s *Simulator) Run() {
 				log.Printf("Mint %.2f coins to %s based on formula: %s\n", s.Rebase(uint64(amount.(int64))), GetAddr(target.(int)),res.Rewards[r].Formula)
 				s.Currency.Mint(environment.Wallets[target.(int)], uint64(amount.(int64)))
 
+				if len(environment.Wallets) == 1 {
+					continue
+				}
 				// Generate a transfer transaction randomly
 				transaction := environment.GenerateTransaction(len(environment.Wallets))
 				from := transaction.From
