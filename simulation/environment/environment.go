@@ -30,7 +30,7 @@ func InitSeed(seed int64) {
 }
 
 func GenerateTransaction(totWallet int) Transaction {
-	return Transaction{rand.Intn(totWallet), rand.Intn(totWallet), uint64(rand.Intn(10) + 1)}
+	return Transaction{rand.Intn(totWallet), rand.Intn(totWallet), uint64(rand.Intn(1000000000) + 1)}
 }
 
 func Factory(name string, currency model.Currency) Environment {

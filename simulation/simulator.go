@@ -4,10 +4,13 @@ import (
 	"../interpretion"
 	"../model"
 	"./environment"
+	"fmt"
 	"github.com/antonmedv/expr"
 	"log"
+	"math"
 	"math/rand"
 	"reflect"
+	"strconv"
 )
 
 func GenerateWallets(totWallet int) {
@@ -18,23 +21,39 @@ func GetWallet(index int) model.Wallet {
 	return environment.Wallets[index]
 }
 
-func Simulate(name string, interval int, currency model.Currency, seed int64, random bool) {
+func GetAddr(index int) string {
+	return GetWallet(index).Addr
+}
+
+type Simulator struct {
+	Name string
+	Interval int
+	Currency model.Currency
+	Seed int64
+	Random bool
+}
+
+func (s *Simulator) Rebase(amount uint64) float64{
+	return float64(amount)/math.Pow10(s.Currency.ValueOfDecimal())
+}
+
+func (s *Simulator) Run() {
 
 	// Read the JSON configuration file
-	res := interpretion.Interpret("../configuration/" + name + ".json")
+	res := interpretion.Interpret("../configuration/" + s.Name + ".json")
 
 	// Init
-	environment.InitSeed(seed)
-	env := environment.Factory(name, currency)
+	environment.InitSeed(s.Seed)
+	env := environment.Factory(s.Name, s.Currency)
 
 	// Randomly give each wallet some initial money
-	if random == true {
+	if s.Random == true {
 		for i := 0; i < len(environment.Wallets); i++ {
-			currency.Mint(environment.Wallets[i], uint64(rand.Intn(100)))
+			s.Currency.Mint(environment.Wallets[i], uint64(rand.Intn(100 * int(math.Pow10(s.Currency.ValueOfDecimal())))))
 		}
 	}
 
-	for phase := 0; phase < interval; phase += res.Frequency {
+	for phase := 0; phase < s.Interval; phase += res.Frequency {
 
 		data := env.GenerateData(uint64(phase), len(environment.Wallets))
 
@@ -73,24 +92,27 @@ func Simulate(name string, interval int, currency model.Currency, seed int64, ra
 				table["i"] = i
 
 				// Calculating reward formula
-				program, _ := expr.Compile(res.Rewards[r].Formula, expr.Env(table), expr.AsInt64())
+				formula := strconv.FormatInt(int64(math.Pow10(s.Currency.ValueOfDecimal())),10)+ " * " + res.Rewards[r].Formula
+				program, _ := expr.Compile(formula, expr.Env(table), expr.AsInt64())
 				amount, _ := expr.Run(program, table)
 
-				//// Calculating reward target
+				// Calculating reward target
 				target, _ := expr.Eval(res.Rewards[r].Target, table)
 
 				// Mint new coins
-				log.Println("Mint", amount, "coins to"+environment.Wallets[target.(int)].Addr, "based on formula:", res.Rewards[r].Formula)
-				currency.Mint(environment.Wallets[target.(int)], uint64(amount.(int64)))
+				log.Printf("Mint %.2f coins to %s based on formula: %s\n", s.Rebase(uint64(amount.(int64))), GetAddr(target.(int)),res.Rewards[r].Formula)
+				s.Currency.Mint(environment.Wallets[target.(int)], uint64(amount.(int64)))
 
 				// Generate a transfer transaction randomly
 				transaction := environment.GenerateTransaction(len(environment.Wallets))
 				from := transaction.From
 				to := transaction.To
 				value := transaction.Value
-				log.Println("Transfer", value, "coins from "+environment.Wallets[from].Addr, "to", environment.Wallets[to].Addr)
-				currency.Transfer(environment.Wallets[from], environment.Wallets[to], value)
+				log.Printf("Transfer %.2f coins from %s to %s\n", s.Rebase(value), GetAddr(from), GetAddr(to))
+				s.Currency.Transfer(environment.Wallets[from], environment.Wallets[to], value)
 			}
 		}
+
+		fmt.Printf("total coin %.2f at phase %d\n", s.Currency.TotalSupply(), phase)
 	}
 }

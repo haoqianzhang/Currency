@@ -1,9 +1,13 @@
 package model
 
+import "math"
+
 type UtxoModel struct {
 	Symbol string
 	UTXO   map[string][]*Output
 	Ledger []Transaction
+	Decimal int
+	Supply uint64
 }
 
 type Output struct {
@@ -21,6 +25,7 @@ func (c *UtxoModel) Mint(u Wallet, amount uint64) {
 	var outputs = []Output{{amount, u.Addr}}
 	c.Ledger = append(c.Ledger, Transaction{[]*Output{}, outputs})
 	c.UTXO[u.Addr] = append(c.UTXO[u.Addr], &c.Ledger[len(c.Ledger)-1].Outputs[0])
+	c.Supply += amount
 }
 
 func (c *UtxoModel) BalanceOf(u Wallet) uint64 {
@@ -69,4 +74,16 @@ func (c *UtxoModel) Transfer(from Wallet, to Wallet, value uint64) bool {
 	}
 
 	return true
+}
+
+func (c *UtxoModel) RebasedBalanceOf(u Wallet) float64 {
+	return float64(c.BalanceOf(u))/math.Pow10(c.Decimal)
+}
+
+func (c *UtxoModel) ValueOfDecimal() int {
+	return c.Decimal
+}
+
+func (c *UtxoModel) TotalSupply() float64 {
+	return float64(c.Supply)/math.Pow10(c.Decimal)
 }

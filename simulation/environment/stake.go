@@ -9,7 +9,7 @@ type Stake struct {
 }
 
 type Stakeholder struct {
-	Amount  uint64
+	Amount  float64
 	Address int
 }
 
@@ -20,7 +20,7 @@ type StakeData struct {
 func (e *Stake) GenerateData(phase uint64, totWallet int) interface{} {
 	var Stakeholders []Stakeholder
 	for i := 0; i < totWallet; i++ {
-		Stakeholders = append(Stakeholders, Stakeholder{e.Currency.BalanceOf(Wallets[i]), i})
+		Stakeholders = append(Stakeholders, Stakeholder{e.Currency.RebasedBalanceOf(Wallets[i]), i})
 	}
 	return StakeData{Stakeholders}
 }

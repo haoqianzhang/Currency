@@ -1,8 +1,12 @@
 package model
 
+import "math"
+
 type BalanceModel struct {
 	Symbol   string
 	Balances map[string]uint64
+	Decimal int
+	Supply uint64
 }
 
 // Create currency from thin air
@@ -11,6 +15,7 @@ func (c *BalanceModel) Mint(u Wallet, amount uint64) {
 		return
 	}
 	c.Balances[u.Addr] += amount
+	c.Supply += amount
 }
 
 func (c *BalanceModel) Transfer(from Wallet, to Wallet, value uint64) bool {
@@ -24,4 +29,16 @@ func (c *BalanceModel) Transfer(from Wallet, to Wallet, value uint64) bool {
 
 func (c *BalanceModel) BalanceOf(u Wallet) uint64 {
 	return c.Balances[u.Addr]
+}
+
+func (c *BalanceModel) RebasedBalanceOf(u Wallet) float64 {
+	return float64(c.BalanceOf(u))/math.Pow10(c.Decimal)
+}
+
+func (c *BalanceModel) TotalSupply() float64 {
+	return float64(c.Supply)/math.Pow10(c.Decimal)
+}
+
+func (c *BalanceModel) ValueOfDecimal() int {
+	return c.Decimal
 }
