@@ -1,0 +1,11 @@
+{
+  "base": "year",
+  "frequency": 1,
+  "rewards": [
+    {
+      "times": "len(PoPTokens)",
+      "formula": "100",
+      "target": "PoPTokens[i]"
+    }
+  ]
+}

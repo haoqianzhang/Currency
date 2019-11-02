@@ -1,0 +1,10 @@
+{
+  "base": "block",
+  "frequency": 1,
+  "rewards": [
+    {
+      "formula": "50 / (2 ** (Height / 210000))",
+      "target": "BlockMiner"
+    }
+  ]
+}

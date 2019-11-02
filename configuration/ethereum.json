@@ -1,0 +1,20 @@
+{
+  "base": "block",
+  "frequency": 1,
+  "rewards": [
+    {
+      "formula": "BaseReward",
+      "target": "BlockMiner"
+    },
+    {
+      "times": "len(UncleBlocks)",
+      "formula": "BaseReward*(8-UncleBlocks[i].Distance)/8",
+      "target": "UncleBlocks[i].Miner"
+    },
+    {
+      "condition": "len(UncleBlocks)>0",
+      "formula": "len(UncleBlocks)*BaseReward/32",
+      "target": "BlockMiner"
+    }
+  ]
+}

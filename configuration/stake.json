@@ -1,0 +1,11 @@
+{
+  "base": "year",
+  "frequency": 1,
+  "rewards": [
+    {
+      "times": "len(Stakeholders)",
+      "formula": "Stakeholders[i].Amount*0.1",
+      "target": "Stakeholders[i].Address"
+    }
+  ]
+}
