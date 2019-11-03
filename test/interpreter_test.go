@@ -1,7 +1,7 @@
 package test
 
 import (
-	"../interpretion"
+	"github.com/haoqianzhang/currency/interpretion"
 	"testing"
 )
 

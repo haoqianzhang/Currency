@@ -1,8 +1,9 @@
 package test
 
 import (
-	"../model"
-	"../simulation"
+	"github.com/haoqianzhang/currency/model"
+	"github.com/haoqianzhang/currency/simulation"
+	"io/ioutil"
 	"log"
 	"testing"
 )
@@ -37,7 +38,7 @@ func Run(name string, interval int, totWallet int, random bool, decimal int, t *
 }
 
 func TestSimulation(t *testing.T) {
-	//log.SetOutput(ioutil.Discard)
+	log.SetOutput(ioutil.Discard)
 	Run("bitcoin", 20, 5, false,8, t)
 	Run("bitcoinYear", 20, 1, false,8, t)
 	Run("ethereum", 20, 5, false,8, t)

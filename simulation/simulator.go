@@ -1,14 +1,15 @@
 package simulation
 
 import (
-	"../interpretion"
-	"../model"
-	"./environment"
+	"github.com/haoqianzhang/currency/interpretion"
+	"github.com/haoqianzhang/currency/model"
+	"github.com/haoqianzhang/currency/simulation/environment"
 	"fmt"
 	"github.com/antonmedv/expr"
 	"log"
 	"math"
 	"math/rand"
+	"os"
 	"reflect"
 	"strconv"
 )
@@ -31,6 +32,7 @@ type Simulator struct {
 	Currency model.Currency
 	Seed int64
 	Random bool
+	Supply []float64
 }
 
 func (s *Simulator) Rebase(amount uint64) float64{
@@ -40,7 +42,10 @@ func (s *Simulator) Rebase(amount uint64) float64{
 func (s *Simulator) Run() {
 
 	// Read the JSON configuration file
-	res := interpretion.Interpret("../configuration/" + s.Name + ".json")
+	gopath := os.Getenv("GOPATH")
+	path := gopath + "/src/github.com/haoqianzhang/currency/configuration/" + s.Name + ".json"
+	res := interpretion.Interpret(path)
+	fmt.Println(path)
 
 	// Init
 	environment.InitSeed(s.Seed)
@@ -116,6 +121,7 @@ func (s *Simulator) Run() {
 			}
 		}
 
-		fmt.Printf("total coin %.2f at phase %d\n", s.Currency.TotalSupply(), phase)
+		s.Supply = append(s.Supply, s.Currency.TotalSupply())
+		//fmt.Printf("total coin %.2f at phase %d\n", s.Currency.TotalSupply(), phase)
 	}
 }

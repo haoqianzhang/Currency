@@ -1,7 +1,7 @@
 package environment
 
 import (
-	"../../model"
+	"github.com/haoqianzhang/currency/model"
 	"fmt"
 	"math/rand"
 )
