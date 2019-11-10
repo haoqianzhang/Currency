@@ -24,5 +24,5 @@ func (e *Ethereum) GenerateData(phase uint64, totWallet int) interface{} {
 	for i := 0; i < totUncleBlock; i++ {
 		uncleBlocks = append(uncleBlocks, UncleBlock{rand.Intn(6) + 2, rand.Intn(totWallet)})
 	}
-	return EthereumData{5, rand.Intn(totWallet), uncleBlocks}
+	return EthereumData{2, rand.Intn(totWallet), uncleBlocks}
 }

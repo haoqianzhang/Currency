@@ -5,8 +5,8 @@ import "math"
 type BalanceModel struct {
 	Symbol   string
 	Balances map[string]uint64
-	Decimal int
-	Supply uint64
+	Decimal  int
+	Supply   uint64
 }
 
 // Create currency from thin air
@@ -32,13 +32,17 @@ func (c *BalanceModel) BalanceOf(u Wallet) uint64 {
 }
 
 func (c *BalanceModel) RebasedBalanceOf(u Wallet) float64 {
-	return float64(c.BalanceOf(u))/math.Pow10(c.Decimal)
+	return float64(c.BalanceOf(u)) / math.Pow10(c.Decimal)
 }
 
 func (c *BalanceModel) TotalSupply() float64 {
-	return float64(c.Supply)/math.Pow10(c.Decimal)
+	return float64(c.Supply) / math.Pow10(c.Decimal)
 }
 
 func (c *BalanceModel) ValueOfDecimal() int {
 	return c.Decimal
+}
+
+func (c *BalanceModel) SetInitialSupply(initialSupply uint64) {
+	c.Supply = initialSupply * uint64(math.Pow10(c.Decimal))
 }

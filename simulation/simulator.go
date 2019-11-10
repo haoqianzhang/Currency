@@ -1,11 +1,11 @@
 package simulation
 
 import (
+	"fmt"
+	"github.com/antonmedv/expr"
 	"github.com/haoqianzhang/currency/interpretion"
 	"github.com/haoqianzhang/currency/model"
 	"github.com/haoqianzhang/currency/simulation/environment"
-	"fmt"
-	"github.com/antonmedv/expr"
 	"log"
 	"math"
 	"math/rand"
@@ -27,16 +27,16 @@ func GetAddr(index int) string {
 }
 
 type Simulator struct {
-	Name string
+	Name     string
 	Interval int
 	Currency model.Currency
-	Seed int64
-	Random bool
-	Supply []float64
+	Seed     int64
+	Random   bool
+	Supply   []float64
 }
 
-func (s *Simulator) Rebase(amount uint64) float64{
-	return float64(amount)/math.Pow10(s.Currency.ValueOfDecimal())
+func (s *Simulator) Rebase(amount uint64) float64 {
+	return float64(amount) / math.Pow10(s.Currency.ValueOfDecimal())
 }
 
 func (s *Simulator) Run() {
@@ -54,9 +54,11 @@ func (s *Simulator) Run() {
 	// Randomly give each wallet some initial money
 	if s.Random == true {
 		for i := 0; i < len(environment.Wallets); i++ {
-			s.Currency.Mint(environment.Wallets[i], uint64(rand.Intn(100 * int(math.Pow10(s.Currency.ValueOfDecimal())))))
+			s.Currency.Mint(environment.Wallets[i], uint64(rand.Intn(100*int(math.Pow10(s.Currency.ValueOfDecimal())))))
 		}
 	}
+
+	s.Supply = append(s.Supply, s.Currency.TotalSupply())
 
 	for phase := 0; phase < s.Interval; phase += res.Frequency {
 
@@ -97,7 +99,7 @@ func (s *Simulator) Run() {
 				table["i"] = i
 
 				// Calculating reward formula
-				formula := strconv.FormatInt(int64(math.Pow10(s.Currency.ValueOfDecimal())),10)+ " * " + res.Rewards[r].Formula
+				formula := strconv.FormatInt(int64(math.Pow10(s.Currency.ValueOfDecimal())), 10) + " * " + res.Rewards[r].Formula
 				program, _ := expr.Compile(formula, expr.Env(table), expr.AsInt64())
 				amount, _ := expr.Run(program, table)
 
@@ -105,7 +107,7 @@ func (s *Simulator) Run() {
 				target, _ := expr.Eval(res.Rewards[r].Target, table)
 
 				// Mint new coins
-				log.Printf("Mint %.2f coins to %s based on formula: %s\n", s.Rebase(uint64(amount.(int64))), GetAddr(target.(int)),res.Rewards[r].Formula)
+				log.Printf("Mint %.2f coins to %s based on formula: %s\n", s.Rebase(uint64(amount.(int64))), GetAddr(target.(int)), res.Rewards[r].Formula)
 				s.Currency.Mint(environment.Wallets[target.(int)], uint64(amount.(int64)))
 
 				if len(environment.Wallets) == 1 {

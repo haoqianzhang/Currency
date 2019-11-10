@@ -3,3 +3,6 @@
 *.xml
 *.iml
 bitcoinYear.csv
+currency
+*.csv
+*.go___jb_tmp___

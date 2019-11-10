@@ -1,0 +1,18 @@
+{
+  "base": "year",
+  "frequency": 1,
+  "rewards": [
+    {
+      "formula": "BaseReward * DailyBlocks * 365",
+      "target": "EthSupply"
+    },
+    {
+      "formula": "BaseReward * DailyUncleBlocks * (8 - UncleBlocksDistance) / 8 * 365",
+      "target": "EthSupply"
+    },
+    {
+      "formula": "BaseReward / 32 * DailyUncleBlocks * 365",
+      "target": "EthSupply"
+    }
+  ]
+}

@@ -1,8 +1,8 @@
 package environment
 
 import (
-	"github.com/haoqianzhang/currency/model"
 	"fmt"
+	"github.com/haoqianzhang/currency/model"
 	"math/rand"
 )
 
@@ -41,6 +41,8 @@ func Factory(name string, currency model.Currency) Environment {
 		return &BitcoinYear{}
 	case "ethereum":
 		return &Ethereum{}
+	case "ethereumYear":
+		return &EthereumYear{}
 	case "stake":
 		return &Stake{currency}
 	case "bryan":

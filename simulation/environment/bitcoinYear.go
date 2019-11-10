@@ -4,7 +4,7 @@ type BitcoinYear struct {
 }
 
 type BitcoinYearData struct {
-	Year     uint64
+	Year          uint64
 	BitcoinSupply int
 }
 

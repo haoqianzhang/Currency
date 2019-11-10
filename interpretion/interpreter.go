@@ -9,7 +9,6 @@ type Rewards struct {
 	Times     string
 	Formula   string
 	Target    string
-	//Authority string
 	Condition string
 }
 

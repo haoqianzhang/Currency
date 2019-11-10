@@ -7,14 +7,15 @@ type Currency interface {
 	TotalSupply() float64
 	ValueOfDecimal() int
 	RebasedBalanceOf(u Wallet) float64
+	SetInitialSupply(initialSupply uint64)
 }
 
 func Factory(name string, symbol string, decimal int) Currency {
 	switch name {
 	case "BalanceModel":
-		return &BalanceModel{symbol, make(map[string]uint64), decimal,0}
+		return &BalanceModel{symbol, make(map[string]uint64), decimal, 0}
 	case "UtxoModel":
-		return &UtxoModel{symbol, make(map[string][]*Output), []Transaction{}, decimal,0}
+		return &UtxoModel{symbol, make(map[string][]*Output), []Transaction{}, decimal, 0}
 	default:
 		panic("No such model")
 	}

@@ -3,11 +3,11 @@ package model
 import "math"
 
 type UtxoModel struct {
-	Symbol string
-	UTXO   map[string][]*Output
-	Ledger []Transaction
+	Symbol  string
+	UTXO    map[string][]*Output
+	Ledger  []Transaction
 	Decimal int
-	Supply uint64
+	Supply  uint64
 }
 
 type Output struct {
@@ -77,7 +77,7 @@ func (c *UtxoModel) Transfer(from Wallet, to Wallet, value uint64) bool {
 }
 
 func (c *UtxoModel) RebasedBalanceOf(u Wallet) float64 {
-	return float64(c.BalanceOf(u))/math.Pow10(c.Decimal)
+	return float64(c.BalanceOf(u)) / math.Pow10(c.Decimal)
 }
 
 func (c *UtxoModel) ValueOfDecimal() int {
@@ -85,5 +85,9 @@ func (c *UtxoModel) ValueOfDecimal() int {
 }
 
 func (c *UtxoModel) TotalSupply() float64 {
-	return float64(c.Supply)/math.Pow10(c.Decimal)
+	return float64(c.Supply) / math.Pow10(c.Decimal)
+}
+
+func (c *UtxoModel) SetInitialSupply(initialSupply uint64) {
+	c.Supply = initialSupply
 }
