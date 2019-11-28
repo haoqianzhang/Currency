@@ -1,0 +1,11 @@
+{
+  "base": "transaction",
+  "frequency": 1,
+  "rewards": [
+    {
+      "times": "len(Users)",
+      "formula": "Users[i].value",
+      "target": "Users[i].addr"
+    }
+  ]
+}

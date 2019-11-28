@@ -1,0 +1,10 @@
+{
+  "base": "transaction",
+  "frequency": 1,
+  "rewards": [
+    {
+      "formula": "0.7 * CollateralValue",
+      "target": "User"
+    }
+  ]
+}

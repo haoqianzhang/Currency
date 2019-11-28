@@ -1,0 +1,14 @@
+{
+  "base": "transaction",
+  "frequency": 1,
+  "rewards": [
+    {
+      "formula": "Value",
+      "target": "Creditor"
+    },
+    {
+      "formula": "-1 * Value",
+      "target": "Debtor"
+    }
+  ]
+}

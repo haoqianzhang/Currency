@@ -1,0 +1,10 @@
+{
+  "base": "transaction",
+  "frequency": 1,
+  "rewards": [
+    {
+      "formula": "0.01 * PurchasesValue",
+      "target": "User"
+    }
+  ]
+}
