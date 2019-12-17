@@ -1,0 +1,26 @@
+{
+  "transaction": {
+    "new": {
+      "update": [
+        {
+          "times": "len(Member)",
+          "formula": "10",
+          "target": "Member[i]"
+        }
+      ]
+    },
+    "transfer": {
+      "condition": "value>0 && balance(Sender)>=value",
+      "update": [
+        {
+          "formula": "-value",
+          "target": "Sender"
+        },
+        {
+          "formula": "value",
+          "target": "Receiver"
+        }
+      ]
+    }
+  }
+}

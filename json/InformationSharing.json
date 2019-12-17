@@ -1,0 +1,30 @@
+{
+  "transaction": {
+    "new": {
+      "update": [
+        {
+          "times": "len(Member)",
+          "formula": "10",
+          "target": "Member[i]"
+        }
+      ]
+    },
+    "transfer": {
+      "condition": "value>0 && balance(Sender)>=value",
+      "update": [
+        {
+          "formula": "-value",
+          "target": "Sender"
+        }
+      ]
+    }
+  },
+  "period": {
+    "year": [
+      {
+        "times": "len(Global.Members)",
+        "formula": "-balance(Global.Members[i])+10"
+      }
+    ]
+  }
+}

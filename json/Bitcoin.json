@@ -1,0 +1,31 @@
+{
+  "block": {
+    "new": {
+      "update": [
+        {
+          "formula": "50 / (2 ** (Height / 210000))",
+          "target": "BlockMiner"
+        }
+      ]
+    }
+  },
+  "transaction": {
+    "transfer": {
+      "condition": "Value>0 && TransactionFee>0 && balance(Sender)>=Value+TransactionFee",
+      "update": [
+        {
+          "formula": "-Value",
+          "target": "Sender"
+        },
+        {
+          "formula": "Value",
+          "target": "Receiver"
+        },
+        {
+          "formula": "TransactionFee",
+          "target": "BlockMiner"
+        }
+      ]
+    }
+  }
+}

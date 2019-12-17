@@ -1,0 +1,35 @@
+{
+  "transaction": {
+    "new": {
+      "update": [
+        {
+          "times": "len(NewMember)",
+          "formula": "1000",
+          "target": "NewMember[i]"
+        }
+      ]
+    },
+    "transfer": {
+      "condition": "value>0 && balance(Sender)>=value",
+      "update": [
+        {
+          "formula": "-value",
+          "target": "Sender"
+        },
+        {
+          "formula": "value",
+          "target": "Receiver"
+        }
+      ]
+    }
+  },
+  "period": {
+    "year": [
+      {
+        "times": "len(Global.Members)",
+        "formula": "-balance(Global.Members[i])*0.02+Global.TotSupply/len(Global.Members)*0.02",
+        "target": "Global.Members[i]"
+      }
+    ]
+  }
+}
